@@ -1,4 +1,4 @@
-package org.example;
+package jp.massango.winfetch;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.intellij.uiDesigner.core.GridConstraints;
@@ -11,8 +11,8 @@ import java.awt.event.ActionListener;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
-import static org.example.ConvertUupStart.StartUUP;
-import static org.example.MessageLogger.log;
+import static jp.massango.winfetch.ConvertUupStart.StartUUP;
+import static jp.massango.winfetch.MessageLogger.log;
 
 public class Yeah extends JFrame
 {

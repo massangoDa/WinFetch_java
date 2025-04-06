@@ -1,10 +1,8 @@
-package org.example;
+package jp.massango.winfetch;
 
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -13,7 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.example.Yeah.Logg;
+import static jp.massango.winfetch.Yeah.Logg;
 
 public class ConvertUupStart
 {

@@ -1,4 +1,4 @@
-package org.example;
+package jp.massango.winfetch;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
