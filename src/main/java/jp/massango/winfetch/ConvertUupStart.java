@@ -10,6 +10,7 @@ import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 import static jp.massango.winfetch.Yeah.Logg;
 
@@ -18,44 +19,43 @@ public class ConvertUupStart
     public static void StartUUP() throws IOException, InterruptedException
     {
         String cmdUrl = "https://raw.githubusercontent.com/abbodi1406/BatUtil/master/uup-converter-wimlib/convert-UUP.cmd";
-        String binUrl = "https://github.com/abbodi1406/BatUtil/archive/refs/heads/master.zip";
+        String binZipUrl = "https://github.com/abbodi1406/BatUtil/archive/refs/heads/master.zip";
+
+        Path isoFolder = Paths.get(System.getProperty("user.dir"), "ISO_FOLDER");
+        Files.createDirectories(isoFolder);
 
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest cmdRequest = HttpRequest.newBuilder()
                 .uri(URI.create(cmdUrl))
                 .build();
-        HttpResponse<Path> cmdResponse = client.send(cmdRequest, HttpResponse.BodyHandlers.ofFile(Paths.get("convert-UUP.cmd")));
+        Path cmdPath = isoFolder.resolve("convert-UUP.cmd");
+        client.send(cmdRequest, HttpResponse.BodyHandlers.ofFile(cmdPath));
 
-        HttpRequest binRequest = HttpRequest.newBuilder()
-                .uri(URI.create(binUrl))
+        HttpRequest zipRequest = HttpRequest.newBuilder()
+                .uri(URI.create(binZipUrl))
                 .build();
-        HttpResponse<Path> binResponse = client.send(binRequest, HttpResponse.BodyHandlers.ofFile(Paths.get("BatUtil-master.zip")));
+        Path zipPath = Files.createTempFile("batutil", ".zip");
+        client.send(zipRequest, HttpResponse.BodyHandlers.ofFile(zipPath));
 
-        Path binZipPath = binResponse.body();
-        Path binDir = Paths.get("BatUtil-master");
-        Files.createDirectories(binDir);
-        try (java.util.zip.ZipInputStream zipInputStream = new java.util.zip.ZipInputStream(Files.newInputStream(binZipPath))) {
+        try (java.util.zip.ZipInputStream zipStream = new java.util.zip.ZipInputStream(Files.newInputStream(zipPath))) {
             java.util.zip.ZipEntry entry;
-            while ((entry = zipInputStream.getNextEntry()) != null) {
-                Path entryPath = binDir.resolve(entry.getName());
-                if (entry.isDirectory()) {
-                    Files.createDirectories(entryPath);
-                } else {
-                    Files.createDirectories(entryPath.getParent());
-                    Files.copy(zipInputStream, entryPath);
+            while ((entry = zipStream.getNextEntry()) != null) {
+                System.out.println("ZIP内のファイル名: " + entry.getName());
+
+                if (entry.getName().startsWith("BatUtil-master/uup-converter-wimlib/bin/") && !entry.isDirectory()) {
+                    String relativeString = entry.getName().substring("BatUtil-master/uup-converter-wimlib/".length());
+                    Path outPath = isoFolder.resolve(relativeString);
+                    Files.createDirectories(outPath.getParent());
+                    Files.copy(zipStream, outPath, StandardCopyOption.REPLACE_EXISTING);
                 }
-                zipInputStream.closeEntry();
+                zipStream.closeEntry();
             }
         }
 
-
-        String currentDir = System.getProperty("user.dir");
-        String cmdPath = currentDir + File.separator + "ISO_FOLDER" + File.separator + "convert-UUP.cmd";
-
-        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", cmdPath);
-        builder.directory(new File(currentDir));
-        builder.start();
+        new ProcessBuilder("cmd.exe", "/c", "start", "\"\"", "convert-UUP.cmd")
+                .directory(isoFolder.toFile())
+                .start();
 
         Logg("convert-UUP.cmdが実行されました。");
         Logg("コマンドプロンプトが立ち上がったら、画面に「Press 0 or q to exit.」と表示されるのをお待ちください。その表示が出たら、キーボードで「0」または「q」を押して閉じてください。", Color.YELLOW);

@@ -14,8 +14,7 @@ import java.util.concurrent.CompletableFuture;
 import static jp.massango.winfetch.ConvertUupStart.StartUUP;
 import static jp.massango.winfetch.MessageLogger.log;
 
-public class Yeah extends JFrame
-{
+public class Yeah extends JFrame {
     private JPanel mainPanel;
     private JPanel ConsolePanel;
     private JPanel SearchPanel;
@@ -44,8 +43,7 @@ public class Yeah extends JFrame
      *
      * @noinspection ALL
      */
-    private void $$$setupUI$$$()
-    {
+    private void $$$setupUI$$$() {
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayoutManager(2, 2, new Insets(10, 10, 10, 10), -1, -1, true, false));
         mainPanel.setMaximumSize(new Dimension(900, 550));
@@ -127,6 +125,7 @@ public class Yeah extends JFrame
         ConsolePanel.add(scrollPane1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         textPane1 = new JTextPane();
         textPane1.setBackground(new Color(-15987700));
+        textPane1.setEditable(true);
         scrollPane1.setViewportView(textPane1);
         SomePanel = new JPanel();
         SomePanel.setLayout(new GridLayoutManager(5, 1, new Insets(0, 0, 0, 0), -1, -1));
@@ -135,8 +134,9 @@ public class Yeah extends JFrame
         label4.setText("バージョン一覧");
         SomePanel.add(label4, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         comboBox3 = new JComboBox();
+        comboBox3.setEditable(false);
         comboBox3.setEnabled(true);
-        SomePanel.add(comboBox3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        SomePanel.add(comboBox3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         versionChoiceButton = new JButton();
         versionChoiceButton.setEnabled(true);
         versionChoiceButton.setText("最新バージョンを選択する");
@@ -166,13 +166,11 @@ public class Yeah extends JFrame
     /**
      * @noinspection ALL
      */
-    public JComponent $$$getRootComponent$$$()
-    {
+    public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
 
-    public Yeah()
-    {
+    public Yeah() {
         try {
             UIManager.setLookAndFeel(new FlatDarculaLaf());
         } catch (UnsupportedLookAndFeelException e) {
@@ -194,11 +192,9 @@ public class Yeah extends JFrame
         log("バージョンを変えたい場合は、リセットボタンを押してください。", Color.YELLOW);
         log("～～～～～～～～～～～～～～", Color.YELLOW);
 
-        Search_Button.addActionListener(new ActionListener()
-        {
+        Search_Button.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 String architecture = (String) comboBox1.getSelectedItem();
                 String version = (String) comboBox2.getSelectedItem();
                 String lang = (String) comboBox4.getSelectedItem();
@@ -222,11 +218,9 @@ public class Yeah extends JFrame
             }
         });
 
-        versionChoiceButton.addActionListener(new ActionListener()
-        {
+        versionChoiceButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 if (comboBox3.getItemCount() == 0) {
                     JOptionPane.showMessageDialog(mainPanel, "検索をしてから押してください。", "エラー", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -237,22 +231,18 @@ public class Yeah extends JFrame
             }
         });
 
-        clearListButton.addActionListener(new ActionListener()
-        {
+        clearListButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 comboBox3.removeAllItems();
                 log("ビルドバージョンリストのリセットが完了しました。", Color.WHITE);
                 JOptionPane.showMessageDialog(mainPanel, "ビルドバージョンリストのリセットが完了しました。", "リセット完了", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
-        downloadButton.addActionListener(new ActionListener()
-        {
+        downloadButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 log("ダウンロードを開始します", Color.WHITE);
                 UUPLinkFetch uupLinkFetch = new UUPLinkFetch(Yeah.this);
 
@@ -268,18 +258,15 @@ public class Yeah extends JFrame
             }
         });
 
-        createIsoButton.addActionListener(new ActionListener()
-        {
+        createIsoButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 createIso();
             }
         });
     }
 
-    public void createIso()
-    {
+    public void createIso() {
         log("convert-UUP.cmdを実行します...", Color.WHITE);
         JOptionPane.showMessageDialog(mainPanel, "cmd使用許可が出ますので、「はい」を選択してください。", "注意", JOptionPane.INFORMATION_MESSAGE);
         try {
@@ -289,28 +276,23 @@ public class Yeah extends JFrame
         }
     }
 
-    public void addItemToComboBox(String item)
-    {
+    public void addItemToComboBox(String item) {
         comboBox3.addItem(item);
     }
 
-    public void setUuid(String uuid)
-    {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 
-    public static void Logg(String message)
-    {
+    public static void Logg(String message) {
         log(message, Color.WHITE);
     }
 
-    public static void Logg(String message, Color color)
-    {
+    public static void Logg(String message, Color color) {
         log(message, color);
     }
 
-    public String getLang()
-    {
+    public String getLang() {
         return lang = (String) comboBox4.getSelectedItem();
     }
 }

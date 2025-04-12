@@ -1,6 +1,6 @@
 <!-- : Begin batch script
 @setlocal DisableDelayedExpansion
-@set uivr=v112
+@set uivr=v111
 @echo off
 :: Change to 1 to enable debug mode
 set _Debug=0
@@ -10,7 +10,7 @@ set _Debug=0
 :: 2 - create ISO with install.esd
 :: 3 - create install.wim only
 :: 4 - create install.esd only
-set AutoStart=1
+set AutoStart=0
 
 :: Change to 1 to integrate updates (if detected) into install.wim/winre.wim
 :: Change to 2 to add updates externally to iso distribution
@@ -736,21 +736,17 @@ goto :esdSWM
 if %SkipISO% neq 0 (
   ren ISOFOLDER %DVDISO%
   set qmsg=Finished. You chose not to create iso file.
-  set isoPath="%~dp0%DVDISO%"
-  echo ISO file path: %isoPath%
   goto :QUIT
 )
 call :dk_color1 %Blue% "=== Creating ISO . . ." 4
 if /i not %arch%==arm64 (
-  cdimage.exe -bootdata:2#p0,e,b"ISOFOLDER\boot\etfsboot.com"#pEF,e,b"ISOFOLDER\efi\Microsoft\boot\efisys.bin" -o -m -u2 -udfver102 -t%isotime% -l%DVDLABEL% ISOFOLDER %DVDISO%.ISO %_Supp%
+cdimage.exe -bootdata:2#p0,e,b"ISOFOLDER\boot\etfsboot.com"#pEF,e,b"ISOFOLDER\efi\Microsoft\boot\efisys.bin" -o -m -u2 -udfver102 -t%isotime% -l%DVDLABEL% ISOFOLDER %DVDISO%.ISO %_Supp%
 ) else (
-  cdimage.exe -bootdata:1#pEF,e,b"ISOFOLDER\efi\Microsoft\boot\efisys.bin" -o -m -u2 -udfver102 -t%isotime% -l%DVDLABEL% ISOFOLDER %DVDISO%.ISO %_Supp%
+cdimage.exe -bootdata:1#pEF,e,b"ISOFOLDER\efi\Microsoft\boot\efisys.bin" -o -m -u2 -udfver102 -t%isotime% -l%DVDLABEL% ISOFOLDER %DVDISO%.ISO %_Supp%
 )
 set ERRTEMP=%ERRORLEVEL%
 if %ERRTEMP% neq 0 goto :E_ISO
 set qmsg=Finished.
-set isoPath="%~dp0%DVDISO%.ISO"
-echo ISO file path: %isoPath%
 goto :QUIT
 
 :Single
@@ -1011,7 +1007,7 @@ goto :BootPE
 )
 if %_build% geq 26052 if exist "%_mount%\Windows\Servicing\Packages\WinPE-Rejuv-Package~*.mum" (
 for /f "delims=" %%# in ('dir /b /a:-d "%_mount%\Windows\Servicing\Packages\WinPE-Rejuv-Package~*.mum"') do (
-  %_dism1% /Image:"%_mount%" /LogPath:"%_dLog%\DismNUL.log" /Remove-Package /PackageName:%%~n# %_Nul3%
+  %_dism1% /Image:"%_mount%" /LogPath:"%_dLog%\DismNUL.log" /Remove-Package /PackageName:%%~n#
   )
 %_dism1% /Commit-Image /MountDir:"%_mount%" /Append %_Supp%
 set relite=1
@@ -2615,7 +2611,6 @@ if exist "%~1\Microsoft-Windows-SV2Moment4Enablement-Package~*.mum" set "_fixSV=
 if exist "%~1\Microsoft-Windows-23H2Enablement-Package~*.mum" set "_fixSV=22631"&set "_fixEP=22631"
 if exist "%~1\Microsoft-Windows-SV2BetaEnablement-Package~*.mum" set "_fixSV=22635"&set "_fixEP=22635"
 if exist "%~1\Microsoft-Windows-Ge-Client-Server-Beta-Version-Enablement-Package~*.mum" set "_fixSV=26120"&set "_fixEP=26120"
-if exist "%~1\Microsoft-Windows-Ge-Client-Server-26200-Version-Enablement-Package~*.mum" set "_fixSV=26200"&set "_fixEP=26200"
 goto :eof
 
 :inrenssu
@@ -2846,8 +2841,8 @@ set "_DsmLog=DismLCU.log"
 if exist "%mumtarget%\Windows\Servicing\Packages\*WinPE-LanguagePack*.mum" (
 set "_DsmLog=DismLCU_winpe.log"
 call :dk_color1 %Gray% "=== Adding LCU for %_wpeLCU% . . ." 4
-if defined lcumsu if %_build% geq 26052 if exist "%mumtarget%\Windows\Servicing\Packages\WinPE-Rejuv-Package~*.mum" for /f "delims=" %%# in ('dir /b /a:-d "%mumtarget%\Windows\Servicing\Packages\WinPE-Rejuv-Package~*.mum"') do (
-  %_dism2%:"!_cabdir!" %dismtarget% /LogPath:"%_dLog%\DismNUL.log" /Remove-Package /PackageName:%%~n# %_Nul3%
+if %_build% geq 26052 if exist "%mumtarget%\Windows\Servicing\Packages\WinPE-Rejuv-Package~*.mum" for /f "delims=" %%# in ('dir /b /a:-d "%mumtarget%\Windows\Servicing\Packages\WinPE-Rejuv-Package~*.mum"') do (
+  %_dism2%:"!_cabdir!" %dismtarget% /LogPath:"%_dLog%\DismNUL.log" /Remove-Package /PackageName:%%~n#
   )
 )
 set idpkg=LCU
