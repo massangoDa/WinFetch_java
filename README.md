@@ -20,10 +20,13 @@ Windows 10 / 11 のすべてのバージョンに対応し、Insider Preview の
 4. ダウンロードしたい **言語** を選択 (例: ja-jp)
 5. ダウンロードしたい **ビルドバージョン** を選択 (例: Windows 11 24H2)  
 6. **ダウンロードボタン** を押す  
-7. 完了後、カレントディレクトリ/ISO_FOLDER/ の中に、isoが生成されます
+7. 完了後、カレントディレクトリ/ISO_FOLDER/ の中に、UUPsフォルダが追加されます。
+8. ISO作成ボタンを押して、convert-uup.cmdとbinフォルダをダウンロードします。
+9. 完了後、/ISO_FOLDERにisoファイルが作られます。
 
 📂 出力ファイルの例:  
 ISO_FOLDER/22621.5116.250307-1750.NI_RELEASE_SVC_PROD2_CLIENTMULTI_X64FRE_JA-JP.iso 
 
 ## 💻 動作環境  
 - Windows 10 / 11
+- (linuxは現在非対応)
