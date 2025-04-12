@@ -268,6 +268,7 @@ public class Yeah extends JFrame {
 
     public void createIso() {
         log("convert-UUP.cmdを実行します...", Color.WHITE);
+        Logg("必要なファイルをダウンロードする準備をしています..", Color.YELLOW);
         JOptionPane.showMessageDialog(mainPanel, "cmd使用許可が出ますので、「はい」を選択してください。", "注意", JOptionPane.INFORMATION_MESSAGE);
         try {
             StartUUP();
