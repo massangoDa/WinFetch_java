@@ -1,4 +1,4 @@
-package org.example;
+package jp.massango.winfetch;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;

@@ -1,7 +1,6 @@
-package org.example;
+package jp.massango.winfetch;
 
 import javax.swing.*;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.CompletableFuture;
 
-import static org.example.Yeah.Logg;
+import static jp.massango.winfetch.Yeah.Logg;
 
 public class UUPDownload
 {
