@@ -22,7 +22,8 @@ Windows 10 / 11 のすべてのバージョンに対応し、Insider Preview の
 6. **ダウンロードボタン** を押す  
 7. 完了後、カレントディレクトリ/ISO_FOLDER/ の中に、UUPsフォルダが追加されます。
 8. ISO作成ボタンを押して、convert-uup.cmdとbinフォルダをダウンロードします。
-9. 完了後、/ISO_FOLDERにisoファイルが作られます。
+9. convert-uup.cmdが立ち上がったら、「1」を選択します。
+10. 完了後、/ISO_FOLDERにisoファイルが作られます。
 
 出力ファイルの例:  
 ISO_FOLDER/22621.5116.250307-1750.NI_RELEASE_SVC_PROD2_CLIENTMULTI_X64FRE_JA-JP.iso 
